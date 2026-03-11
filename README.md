@@ -1,8 +1,10 @@
 # ConnectorHub
 
-Integration control plane for SaaS engineering teams.
+> Integration control plane for SaaS engineering teams.
 
-Monitor connector health, inspect sync jobs, investigate failures — all in one operational dashboard.
+**Live:** https://hermes-platform-ten.vercel.app
+
+Monitor connector health, inspect sync jobs, investigate failures — a simulated B2B SaaS dashboard for managing API integrations.
 
 ---
 
@@ -16,25 +18,28 @@ Built as a portfolio project to demonstrate: React architecture, API-driven UI d
 
 ## Features
 
-| Page | Description |
-|------|-------------|
-| Dashboard | Platform health at a glance — KPIs, active connectors, recent incidents |
-| Connectors | All configured integrations with status, health score and auth state |
-| Connector Details | Per-connector deep dive: sync history, rate limits, payload samples, errors |
-| Sync Jobs | Full run history with status, duration, retries and trigger type |
-| Logs | Error and warning stream — filterable by severity and connector |
-| Docs | Connector reference, retry policies, payload examples |
+| Page | What it shows |
+|------|---------------|
+| Dashboard | KPI cards, active connector health, recent incidents, alert banners |
+| Connectors | Table of all integrations with status, auth, health score, last sync |
+| Connector Detail | Per-connector: auth state, rate limits, sync history, errors, payload samples |
+| Sync Jobs | Full run history — status, duration, retries, trigger type |
+| Logs | Filterable error/warning stream with expandable details |
+| Docs | Auth reference, retry policy, rate limit table, payload format |
 
 ---
 
 ## Stack
 
-- **React 18 + TypeScript** — strict mode, no `any`
-- **Vite** — fast dev server and build
-- **React Router v6** — client-side routing
-- **TanStack Query v5** — data fetching and caching
-- **Tailwind CSS v3** — utility-first styling with custom design tokens
-- **MSW v2** — API mocking via service worker (no real backend in v1)
+| Layer | Choice |
+|-------|--------|
+| Framework | React 18 + TypeScript (strict, no `any`) |
+| Build | Vite |
+| Routing | React Router v6 |
+| Data fetching | TanStack Query v5 |
+| Styling | Tailwind CSS v3 + inline styles for dynamic values |
+| API mocking | MSW v2 (browser service worker) |
+| Deploy | Vercel (auto-deploy on push to `main`) |
 
 ---
 
@@ -45,7 +50,7 @@ npm install
 npm run dev
 ```
 
-App runs at `http://localhost:5173`. MSW intercepts all `/api/*` requests automatically.
+App at `http://localhost:5173`. MSW intercepts all `/api/*` requests in dev mode — no backend needed.
 
 ---
 
@@ -53,37 +58,25 @@ App runs at `http://localhost:5173`. MSW intercepts all `/api/*` requests automa
 
 ```
 src/
-├── app/          # Router, providers, layout shell
-├── pages/        # Route-level views (thin, delegate to features)
-├── components/   # Reusable UI primitives (Badge, Card, Table...)
-├── features/     # Domain components per area
-├── services/     # API functions + TanStack Query hooks
-├── mocks/        # MSW handlers + typed fixtures
-├── types/        # Domain interfaces
-└── lib/          # Shared utilities
+├── app/          # Router, QueryClient provider, layout shell (Sidebar, Header)
+├── pages/        # Route-level views — thin, delegate to components
+├── components/   # Reusable primitives: Card, StatusBadge, HealthBar, Skeleton, CodeBlock
+├── services/     # api/ fetch layer + queries/ TanStack Query hooks
+├── mocks/        # MSW handlers + typed fixtures (5 connectors, 6 jobs, 5 error logs)
+├── types/        # Domain interfaces: Connector, SyncJob, ErrorLog, Provider...
+└── lib/          # format.ts (dates, durations, numbers), cn.ts
 ```
 
-No real backend in v1. The API layer is structured so swapping MSW for real endpoints requires only changing service functions — pages and components are unaffected.
+All mock data flows through the same API surface that a real backend would expose. Replacing MSW with real endpoints requires changing only `src/services/api/index.ts`.
 
 ---
 
-## Development status
+## Future work (v2)
 
-- [x] Phase 1 — Bootstrap and foundation
-- [ ] Phase 2 — Layout and navigation
-- [ ] Phase 3 — Domain data and mock API
-- [ ] Phase 4 — Feature pages
-- [ ] Phase 5 — UX refinement
-- [ ] Phase 6 — Production deployment
-
----
-
-## Future work
-
-- Real backend (Fastify + SQLite)
-- Authentication
-- Real-time updates via SSE
-- Retry actions
+- Real backend — Fastify + SQLite
+- Authentication + session management  
+- Real-time updates via Server-Sent Events
+- Connector re-auth and retry actions
 - Connector configuration forms
 - Audit trail
 

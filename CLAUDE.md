@@ -37,7 +37,7 @@ Not a landing page. Not a CRUD toy. Behaves like an internal B2B SaaS product.
 | 3 | Domain data + mock API | ⏳ Pending |
 | 4 | Feature pages | ⏳ Pending |
 | 5 | UX refinement | ⏳ Pending |
-| 6 | Production deployment | ⏳ Pending |
+| 6 | Production deployment | ✅ Done — https://hermes-platform-ten.vercel.app |
 
 **Rule:** implement phases sequentially. Do not skip ahead.
 
@@ -185,3 +185,11 @@ Do not implement these. Do not suggest them during development.
 - [ ] Deployed to Vercel with live URL
 - [ ] README complete with screenshots
 - [ ] GitHub repo public and clean
+
+---
+
+## Production URL
+
+https://hermes-platform-ten.vercel.app
+
+Deploy: Vercel — auto-deploy on every push to `main`.
