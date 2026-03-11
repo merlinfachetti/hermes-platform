@@ -17,12 +17,11 @@ export function Footer() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         {/* Merlin Lab mark */}
         <div style={{
-          width: '18px', height: '18px', borderRadius: '4px',
-          background: 'linear-gradient(135deg, #2563eb 0%, #0891b2 100%)',
+          width: '22px', height: '22px', borderRadius: '4px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '10px', flexShrink: 0,
+          fontSize: '16px', flexShrink: 0,
         }}>
-          ✦
+          🧙🏼‍♀️
         </div>
         <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '500' }}>
           Merlin Lab
