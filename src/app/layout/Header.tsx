@@ -1,8 +1,11 @@
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { ThemeToggle } from '../../components/ui/ThemeToggle'
+import { Avatar } from '../../components/ui/Avatar'
 
 const pageMeta: Record<string, { title: string; description: string }> = {
-  '/':            { title: 'Dashboard',        description: 'Platform health and operational overview' },
+  '/':            { title: 'Hermes Lab',       description: 'Integration Control Plane' },
+  '/dashboard':   { title: 'Dashboard',        description: 'Platform health and operational overview' },
   '/connectors':  { title: 'Connectors',       description: 'All configured integration instances' },
   '/sync-jobs':   { title: 'Sync Jobs',        description: 'Synchronization run history' },
   '/logs':        { title: 'Logs',             description: 'Errors, warnings and operational events' },
@@ -16,15 +19,15 @@ export function Header() {
   const isDetail = location.pathname.startsWith('/connectors/') && location.pathname !== '/connectors'
   const meta = isDetail
     ? { title: 'Connector Detail', description: 'Integration status and diagnostics' }
-    : pageMeta[location.pathname] ?? { title: 'ConnectorHub', description: '' }
+    : pageMeta[location.pathname] ?? { title: 'Hermes Lab', description: '' }
 
   useEffect(() => {
-    const tick = () => {
-      setTime(new Date().toLocaleTimeString('en-US', {
+    const tick = () => setTime(
+      new Date().toLocaleTimeString('en-US', {
         hour: '2-digit', minute: '2-digit', second: '2-digit',
         hour12: false, timeZone: 'UTC',
-      }))
-    }
+      })
+    )
     tick()
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
@@ -33,51 +36,49 @@ export function Header() {
   return (
     <header style={{
       height: '52px',
-      borderBottom: '1px solid #1a2030',
-      backgroundColor: '#0d1017',
+      borderBottom: '1px solid var(--border-subtle)',
+      backgroundColor: 'var(--bg-surface)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       padding: '0 24px',
       flexShrink: 0,
+      transition: 'background-color 0.3s ease, border-color 0.3s ease',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span style={{ fontWeight: '600', fontSize: '13.5px', color: '#e2e8f0' }}>
+        <span style={{ fontWeight: '600', fontSize: '13.5px', color: 'var(--text-primary)', transition: 'color 0.3s' }}>
           {meta.title}
         </span>
         {meta.description && (
           <>
-            <span style={{ color: '#1e2a3a', fontSize: '14px' }}>/</span>
-            <span style={{ fontSize: '12.5px', color: '#475569' }}>{meta.description}</span>
+            <span style={{ color: 'var(--border-default)', fontSize: '14px' }}>/</span>
+            <span style={{ fontSize: '12.5px', color: 'var(--text-muted)', transition: 'color 0.3s' }}>
+              {meta.description}
+            </span>
           </>
         )}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        {/* Live clock */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* UTC clock */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#22c55e' }} />
+          <span className="pulse-dot" style={{
+            width: '5px', height: '5px', borderRadius: '50%',
+            backgroundColor: 'var(--accent-green)', display: 'inline-block',
+          }} />
           <span style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11.5px', color: '#475569', letterSpacing: '0.03em',
+            fontSize: '11px', color: 'var(--text-faint)',
+            letterSpacing: '0.03em', transition: 'color 0.3s',
           }}>
             {time} UTC
           </span>
         </div>
 
-        {/* Divider */}
-        <div style={{ width: '1px', height: '16px', backgroundColor: '#1a2030' }} />
+        <div style={{ width: '1px', height: '16px', backgroundColor: 'var(--border-subtle)' }} />
 
-        {/* Avatar */}
-        <div style={{
-          width: '26px', height: '26px', borderRadius: '50%',
-          background: 'linear-gradient(135deg, #1d4ed8, #0891b2)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '11px', fontWeight: '600', color: 'white', cursor: 'pointer',
-          userSelect: 'none',
-        }}>
-          E
-        </div>
+        <ThemeToggle />
+        <Avatar size={28} />
       </div>
     </header>
   )

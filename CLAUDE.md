@@ -1,4 +1,4 @@
-# CLAUDE.md — ConnectorHub
+# CLAUDE.md — Hermes Lab
 
 Context file for AI-assisted development. Read this before any implementation task.
 
@@ -6,7 +6,7 @@ Context file for AI-assisted development. Read this before any implementation ta
 
 ## Project identity
 
-**Name:** ConnectorHub  
+**Name:** Hermes Lab  
 **Type:** Portfolio SPA — developer tool / integration control plane  
 **Goal:** Demonstrate frontend engineering skills aligned with devtools/iPaaS companies (Nango, Merge, Airbyte, etc.)  
 **Status:** Phase 1 complete → Phase 2 next

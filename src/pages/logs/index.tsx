@@ -16,14 +16,13 @@ export default function LogsPage() {
   const { data: logs, isLoading, error, refetch } = useLogs()
   const { data: connectors } = useConnectors()
   const connectorMap = Object.fromEntries((connectors ?? []).map((c) => [c.id, c]))
-
   const filtered = filter === 'all' ? logs : logs?.filter((l) => l.severity === filter)
 
   if (isLoading) return (
-    <div style={{ padding: '32px' }}>
+    <div style={{ padding: '28px 32px' }}>
       <Card padding="0">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} style={{ padding: '16px 20px', borderBottom: '1px solid #1e2530' }}>
+          <div key={i} style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)' }}>
             <Skeleton height="40px" />
           </div>
         ))}
@@ -31,64 +30,73 @@ export default function LogsPage() {
     </div>
   )
 
-  if (error) return <div style={{ padding: '32px' }}><ErrorState onRetry={() => refetch()} /></div>
+  if (error) return <div style={{ padding: '28px 32px' }}><ErrorState onRetry={() => refetch()} /></div>
 
   return (
-    <div style={{ padding: '32px', maxWidth: '1100px' }}>
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+    <div style={{ padding: '28px 32px', maxWidth: '1100px' }}>
+      {/* Filter bar */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
         {SEVERITIES.map((s) => (
           <button key={s} onClick={() => setFilter(s)} style={{
-            padding: '5px 12px', borderRadius: '5px', fontSize: '12px',
-            fontWeight: '500', cursor: 'pointer', border: '1px solid',
-            borderColor: filter === s ? '#3b82f6' : '#252d3a',
-            backgroundColor: filter === s ? '#0d1a2e' : 'transparent',
-            color: filter === s ? '#3b82f6' : '#94a3b8',
+            padding: '5px 12px', borderRadius: '5px', fontSize: '12px', fontWeight: '500',
+            cursor: 'pointer', border: '1px solid',
+            borderColor: filter === s ? 'var(--accent-blue)' : 'var(--border-default)',
+            backgroundColor: filter === s ? 'var(--bg-elevated)' : 'transparent',
+            color: filter === s ? 'var(--accent-blue)' : 'var(--text-muted)',
+            transition: 'all 0.15s',
           }}>
             {s}
           </button>
         ))}
-        <span style={{ marginLeft: 'auto', fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center' }}>
+        <span style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--text-faint)' }}>
           {filtered?.length ?? 0} events
         </span>
       </div>
 
       <Card padding="0">
-        {!filtered?.length ? <EmptyState title="No events match this filter" /> :
-          filtered.map((log) => (
+        {!filtered?.length
+          ? <EmptyState title="No events match this filter" />
+          : filtered.map((log) => (
             <div
               key={log.id}
               onClick={() => setExpanded(expanded === log.id ? null : log.id)}
               style={{
-                padding: '14px 20px',
-                borderBottom: '1px solid #1e2530',
+                padding: '14px 20px', borderBottom: '1px solid var(--border-subtle)',
                 cursor: 'pointer',
-                backgroundColor: expanded === log.id ? '#13171f' : 'transparent',
+                backgroundColor: expanded === log.id ? 'var(--bg-elevated)' : 'transparent',
+                transition: 'background-color 0.15s',
               }}
               onMouseEnter={(e) => {
-                if (expanded !== log.id) e.currentTarget.style.backgroundColor = '#0e1117'
+                if (expanded !== log.id) e.currentTarget.style.backgroundColor = 'var(--bg-hover)'
               }}
               onMouseLeave={(e) => {
                 if (expanded !== log.id) e.currentTarget.style.backgroundColor = 'transparent'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                 <StatusBadge status={log.severity} size="sm" />
-                <span style={{ fontSize: '11px', color: '#64748b', fontFamily: 'JetBrains Mono, monospace' }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)', fontFamily: 'JetBrains Mono, monospace' }}>
                   {log.code}
                 </span>
-                <span style={{ fontSize: '13px', color: '#e2e8f0', flex: 1 }}>{log.message}</span>
-                <span style={{ fontSize: '11px', color: '#64748b' }}>
+                <span style={{ fontSize: '13px', color: 'var(--text-primary)', flex: 1, transition: 'color 0.3s' }}>
+                  {log.message}
+                </span>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                   {connectorMap[log.connectorId]?.name ?? log.connectorId}
                 </span>
-                <span style={{ fontSize: '11px', color: '#64748b' }}>{formatDateTime(log.occurredAt)}</span>
-                <span style={{ fontSize: '12px', color: '#64748b' }}>{expanded === log.id ? '▲' : '▼'}</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
+                  {formatDateTime(log.occurredAt)}
+                </span>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
+                  {expanded === log.id ? '▲' : '▼'}
+                </span>
               </div>
-
               {expanded === log.id && (
                 <div style={{
                   marginTop: '12px', padding: '12px', borderRadius: '6px',
-                  backgroundColor: '#0a0b0d', border: '1px solid #1e2530',
-                  fontSize: '12px', color: '#94a3b8', lineHeight: '1.6',
+                  backgroundColor: 'var(--bg-base)', border: '1px solid var(--border-subtle)',
+                  fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6',
+                  transition: 'all 0.3s',
                 }}>
                   {log.details}
                 </div>

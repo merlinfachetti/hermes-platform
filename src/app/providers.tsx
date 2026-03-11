@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from '../lib/theme'
 import type { ReactNode } from 'react'
 
 const queryClient = new QueryClient({
@@ -11,10 +12,12 @@ const queryClient = new QueryClient({
   },
 })
 
-interface ProvidersProps {
-  children: ReactNode
-}
-
-export function Providers({ children }: ProvidersProps) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </ThemeProvider>
+  )
 }

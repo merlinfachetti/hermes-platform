@@ -6,9 +6,9 @@ interface EmptyStateProps {
 export function EmptyState({ title, description }: EmptyStateProps) {
   return (
     <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-      <div style={{ fontSize: '28px', marginBottom: '12px', opacity: 0.3 }}>⊘</div>
-      <div style={{ fontSize: '13px', fontWeight: '500', color: '#94a3b8', marginBottom: '6px' }}>{title}</div>
-      {description && <div style={{ fontSize: '12px', color: '#64748b' }}>{description}</div>}
+      <div style={{ fontSize: '28px', marginBottom: '12px', opacity: 0.2 }}>⊘</div>
+      <div style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '6px', transition: 'color 0.3s' }}>{title}</div>
+      {description && <div style={{ fontSize: '12px', color: 'var(--text-muted)', transition: 'color 0.3s' }}>{description}</div>}
     </div>
   )
 }
@@ -22,12 +22,15 @@ export function ErrorState({ message = 'Failed to load data', onRetry }: ErrorSt
   return (
     <div style={{ padding: '48px 24px', textAlign: 'center' }}>
       <div style={{ fontSize: '28px', marginBottom: '12px', opacity: 0.4 }}>⚠</div>
-      <div style={{ fontSize: '13px', fontWeight: '500', color: '#ef4444', marginBottom: '6px' }}>{message}</div>
+      <div style={{ fontSize: '13px', fontWeight: '500', color: 'var(--accent-red)', marginBottom: '6px' }}>{message}</div>
       {onRetry && (
         <button onClick={onRetry} style={{
           marginTop: '12px', padding: '6px 14px',
-          backgroundColor: '#1e222a', border: '1px solid #252d3a',
-          borderRadius: '5px', color: '#94a3b8', fontSize: '12px', cursor: 'pointer',
+          backgroundColor: 'var(--bg-elevated)',
+          border: '1px solid var(--border-default)',
+          borderRadius: '5px', color: 'var(--text-secondary)',
+          fontSize: '12px', cursor: 'pointer',
+          transition: 'all 0.2s',
         }}>
           Retry
         </button>

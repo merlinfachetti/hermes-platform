@@ -287,7 +287,7 @@ export const extraPayloadSamples: PayloadSample[] = [
     payload: {
       channel: '#engineering-alerts',
       text: 'Sync completed: 48 records updated',
-      username: 'ConnectorHub Bot',
+      username: 'Hermes Lab Bot',
       timestamp: '2026-03-10T18:25:00Z',
     },
     createdAt: '2026-03-10T18:25:00Z',

@@ -1,4 +1,4 @@
-# ConnectorHub
+# Hermes Lab
 
 > Hermes is an operational interface for integrations, not the system that executes the integrations.
 
@@ -10,7 +10,7 @@ Monitor connector health, inspect sync jobs, investigate failures — a simulate
 
 ## Why
 
-Modern SaaS products integrate with dozens of external providers (Salesforce, HubSpot, Slack...). These integrations break in subtle ways: tokens expire, rate limits get hit, payload schemas drift, syncs time out. ConnectorHub simulates the interface teams use to manage these concerns.
+Modern SaaS products integrate with dozens of external providers (Salesforce, HubSpot, Slack...). These integrations break in subtle ways: tokens expire, rate limits get hit, payload schemas drift, syncs time out. Hermes Lab simulates the interface teams use to manage these concerns.
 
 Built as a portfolio project to demonstrate: React architecture, API-driven UI design, and developer tooling UX.
 

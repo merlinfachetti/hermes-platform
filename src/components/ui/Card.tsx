@@ -9,10 +9,11 @@ interface CardProps {
 export function Card({ children, style, padding = '20px' }: CardProps) {
   return (
     <div style={{
-      backgroundColor: '#111318',
-      border: '1px solid #1e2530',
+      backgroundColor: 'var(--bg-surface)',
+      border: '1px solid var(--border-subtle)',
       borderRadius: '8px',
       padding,
+      transition: 'background-color 0.3s, border-color 0.3s',
       ...style,
     }}>
       {children}
@@ -30,8 +31,8 @@ export function CardHeader({ title, description, action }: CardHeaderProps) {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
       <div>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: '#e2e8f0' }}>{title}</div>
-        {description && <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>{description}</div>}
+        <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)', transition: 'color 0.3s' }}>{title}</div>
+        {description && <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px', transition: 'color 0.3s' }}>{description}</div>}
       </div>
       {action && <div>{action}</div>}
     </div>
