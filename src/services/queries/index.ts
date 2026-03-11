@@ -41,5 +41,9 @@ export function usePayloadSamples(connectorId?: string) {
 }
 
 export function useRateLimit(connectorId: string) {
-  return useQuery({ queryKey: keys.rateLimit(connectorId), queryFn: () => api.getRateLimit(connectorId) })
+  return useQuery({
+    queryKey: keys.rateLimit(connectorId),
+    queryFn: () => api.getRateLimit(connectorId),
+    enabled: !!connectorId,
+  })
 }

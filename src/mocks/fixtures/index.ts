@@ -254,4 +254,58 @@ export const rateLimitWindows: RateLimitWindow[] = [
     used: 88,
     limit: 500,
   },
+  {
+    connectorId: 'c_003',
+    windowStart: '2026-03-10T18:15:00Z',
+    windowEnd: '2026-03-10T18:30:00Z',
+    used: 0,
+    limit: 50,
+  },
+  {
+    connectorId: 'c_004',
+    windowStart: '2026-03-11T10:45:00Z',
+    windowEnd: '2026-03-11T11:00:00Z',
+    used: 12,
+    limit: 300,
+  },
+  {
+    connectorId: 'c_005',
+    windowStart: '2026-03-09T13:45:00Z',
+    windowEnd: '2026-03-09T14:00:00Z',
+    used: 203,
+    limit: 1000,
+  },
+]
+
+// Additional payload samples
+export const extraPayloadSamples: PayloadSample[] = [
+  {
+    id: 'ps_003',
+    connectorId: 'c_003',
+    direction: 'outbound',
+    contentType: 'application/json',
+    payload: {
+      channel: '#engineering-alerts',
+      text: 'Sync completed: 48 records updated',
+      username: 'ConnectorHub Bot',
+      timestamp: '2026-03-10T18:25:00Z',
+    },
+    createdAt: '2026-03-10T18:25:00Z',
+  },
+  {
+    id: 'ps_004',
+    connectorId: 'c_004',
+    direction: 'inbound',
+    contentType: 'application/json',
+    payload: {
+      object: 'page',
+      id: 'notion-page-0042',
+      properties: {
+        title: { type: 'title', title: [{ plain_text: 'Q1 Engineering Roadmap' }] },
+        status: { type: 'select', select: { name: 'In Progress' } },
+        lastEditedTime: '2026-03-11T10:55:00Z',
+      },
+    },
+    createdAt: '2026-03-11T11:00:00Z',
+  },
 ]
