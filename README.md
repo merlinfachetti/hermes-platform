@@ -1,6 +1,6 @@
 # ConnectorHub
 
-> Integration control plane for SaaS engineering teams.
+> Hermes is an operational interface for integrations, not the system that executes the integrations.
 
 **Live:** https://hermes-platform-ten.vercel.app
 
