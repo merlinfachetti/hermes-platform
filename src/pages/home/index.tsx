@@ -131,7 +131,7 @@ export default function HomePage() {
           lineHeight: 1.15,
           transition: 'color 0.3s',
         }}>
-          Hermes Lab
+          Hermes Platform
           <span style={{ color: 'var(--accent-blue)' }}>.</span>
         </h1>
 
@@ -201,11 +201,11 @@ export default function HomePage() {
       {/* What is section */}
       <div className="animate-fade-up" style={{ animationDelay: '100ms', opacity: 0, animationFillMode: 'forwards', marginBottom: '32px' }}>
         <h2 style={{ margin: '0 0 8px', fontSize: '16px', fontWeight: '600', color: 'var(--text-primary)', transition: 'color 0.3s' }}>
-          What is Hermes Lab?
+          What is Hermes Platform?
         </h2>
         <p style={{ margin: '0 0 20px', fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.7', maxWidth: '620px', transition: 'color 0.3s' }}>
           Modern SaaS products depend on dozens of external integrations. When they break — and they do —
-          you need visibility. Hermes Lab is the interface your team uses to know what's happening, why it failed,
+          you need visibility. Hermes Platform is the interface your team uses to know what's happening, why it failed,
           and how to fix it. No backend digging, no guessing.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>

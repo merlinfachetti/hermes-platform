@@ -90,7 +90,7 @@ function HermesLogo() {
           color: 'var(--text-primary)', letterSpacing: '-0.02em',
           transition: 'color 0.3s',
         }}>
-          Hermes Lab
+          Hermes Platform
         </div>
         <div style={{ fontSize: '10px', color: 'var(--text-faint)', marginTop: '1px', transition: 'color 0.3s' }}>
           by Merlin Lab

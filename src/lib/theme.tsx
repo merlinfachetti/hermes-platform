@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextValue>({
   toggle: () => {},
 })
 
-const STORAGE_KEY = 'hermes-lab-theme'
+const STORAGE_KEY = 'hermes-platform-theme'
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {

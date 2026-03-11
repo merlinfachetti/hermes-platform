@@ -4,7 +4,7 @@ import { ThemeToggle } from '../../components/ui/ThemeToggle'
 import { Avatar } from '../../components/ui/Avatar'
 
 const pageMeta: Record<string, { title: string; description: string }> = {
-  '/':            { title: 'Hermes Lab',       description: 'Integration Control Plane' },
+  '/':            { title: 'Hermes Platform',       description: 'Integration Control Plane' },
   '/dashboard':   { title: 'Dashboard',        description: 'Platform health and operational overview' },
   '/connectors':  { title: 'Connectors',       description: 'All configured integration instances' },
   '/sync-jobs':   { title: 'Sync Jobs',        description: 'Synchronization run history' },
@@ -19,7 +19,7 @@ export function Header() {
   const isDetail = location.pathname.startsWith('/connectors/') && location.pathname !== '/connectors'
   const meta = isDetail
     ? { title: 'Connector Detail', description: 'Integration status and diagnostics' }
-    : pageMeta[location.pathname] ?? { title: 'Hermes Lab', description: '' }
+    : pageMeta[location.pathname] ?? { title: 'Hermes Platform', description: '' }
 
   useEffect(() => {
     const tick = () => setTime(

@@ -28,7 +28,7 @@ export function Footer() {
         </span>
         <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>·</span>
         <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>
-          Hermes Lab — Integration Control Plane
+          Hermes Platform — Integration Control Plane
         </span>
       </div>
 

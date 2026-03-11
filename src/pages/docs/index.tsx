@@ -9,7 +9,7 @@ const sections = [
     content: (
       <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: '1.8' }}>
         <p style={{ margin: '0 0 12px' }}>
-          Hermes Lab manages authenticated connections to third-party SaaS providers.
+          Hermes Platform manages authenticated connections to third-party SaaS providers.
           Each connector runs periodic sync jobs to pull or push data between your platform and the provider.
         </p>
         <p style={{ margin: 0 }}>
@@ -76,7 +76,7 @@ Manual re-trigger required after root cause resolution.`} />
     title: 'Rate Limits',
     content: (
       <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: '1.8' }}>
-        <p style={{ margin: '0 0 12px' }}>Each provider enforces its own API rate limits. Hermes Lab tracks usage per window and pauses syncs when approaching limits.</p>
+        <p style={{ margin: '0 0 12px' }}>Each provider enforces its own API rate limits. Hermes Platform tracks usage per window and pauses syncs when approaching limits.</p>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #1e2530' }}>
