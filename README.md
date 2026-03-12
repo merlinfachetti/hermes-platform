@@ -2,7 +2,7 @@
 
 > Hermes is an operational interface for integrations, not the system that executes the integrations.
 
-**Live:** https://hermes-platform-app.vercel.app
+**Live:** https://hermes.aldenmerlin.com
 
 Monitor connector health, inspect sync jobs, investigate failures — a simulated B2B SaaS dashboard for managing API integrations.
 
