@@ -8,6 +8,14 @@ Monitor connector health, inspect sync jobs, investigate failures — a simulate
 
 ---
 
+## Screenshots
+
+| Dark Mode | Light Mode |
+|:---------:|:----------:|
+| ![Hermes Platform — Dark Mode](docs/screenshot-dark.png) | ![Hermes Platform — Light Mode](docs/screenshot-light.png) |
+
+---
+
 ## Why
 
 Modern SaaS products integrate with dozens of external providers (Salesforce, HubSpot, Slack...). These integrations break in subtle ways: tokens expire, rate limits get hit, payload schemas drift, syncs time out. Hermes Platform simulates the interface teams use to manage these concerns.
