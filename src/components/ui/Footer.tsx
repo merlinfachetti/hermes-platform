@@ -15,7 +15,7 @@ export function Footer() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {/* Merlin Lab mark */}
+        {/* Alden Merlin mark */}
         <div style={{
           width: '22px', height: '22px', borderRadius: '4px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -24,7 +24,7 @@ export function Footer() {
           🧙🏼‍♀️
         </div>
         <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '500' }}>
-          Merlin Lab
+          Alden Merlin
         </span>
         <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>·</span>
         <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>
@@ -37,7 +37,7 @@ export function Footer() {
           v0.1.0-alpha
         </span>
         <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
-          © {year} Merlin Lab. All rights reserved.
+          © {year} Alden Merlin. All rights reserved.
         </span>
         <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
           MIT License

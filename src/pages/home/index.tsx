@@ -119,7 +119,7 @@ export default function HomePage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
           <StatusPill label="Live" status="ok" />
           <StatusPill label="v0.1.0-alpha" status="warn" />
-          <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>by Merlin Lab</span>
+          <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>by Alden Merlin</span>
         </div>
 
         <h1 style={{

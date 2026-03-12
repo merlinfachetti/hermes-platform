@@ -93,7 +93,7 @@ function HermesLogo() {
           Hermes Platform
         </div>
         <div style={{ fontSize: '10px', color: 'var(--text-faint)', marginTop: '1px', transition: 'color 0.3s' }}>
-          by Merlin Lab
+          by Alden Merlin
         </div>
       </div>
     </div>
