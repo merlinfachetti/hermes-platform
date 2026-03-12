@@ -12,22 +12,25 @@ const ThemeContext = createContext<ThemeContextValue>({
   toggle: () => {},
 })
 
-const STORAGE_KEY = 'hermes-platform-theme'
+export const STORAGE_KEY = 'hermes-platform-theme'
+
+function getInitialTheme(): Theme {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === 'light' || saved === 'dark') return saved
+  } catch {}
+  return 'dark'
+}
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      if (saved === 'light' || saved === 'dark') return saved
-    } catch {}
-    return 'dark'
-  })
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   useEffect(() => {
+    // Sync attribute and storage on every change
+    document.documentElement.setAttribute('data-theme', theme)
     try {
       localStorage.setItem(STORAGE_KEY, theme)
     } catch {}
-    document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
   const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
