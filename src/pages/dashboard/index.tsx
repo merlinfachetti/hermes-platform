@@ -189,14 +189,23 @@ export default function DashboardPage() {
       {/* Alert banner if degraded connectors */}
       {degraded.length > 0 && (
         <div style={{
-          marginTop: '14px', padding: '12px 16px',
-          backgroundColor: '#1c1208', border: '1px solid #713f12',
-          borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '10px',
+          marginTop: '14px', padding: '11px 16px',
+          backgroundColor: 'var(--bg-elevated)',
+          border: '1px solid var(--border-default)',
+          borderLeft: '3px solid var(--accent-yellow)',
+          borderRadius: '6px',
+          display: 'flex', alignItems: 'center', gap: '10px',
+          transition: 'all 0.3s',
         }}>
-          <span style={{ fontSize: '13px' }}>⚠</span>
-          <span style={{ fontSize: '12.5px', color: '#a16207' }}>
-            {degraded.length} connector{degraded.length > 1 ? 's' : ''} need attention:{' '}
-            {degraded.map(c => c.name).join(', ')}
+          <span style={{ fontSize: '13px', flexShrink: 0 }}>⚠</span>
+          <span style={{ fontSize: '12.5px', lineHeight: '1.5' }}>
+            <span style={{ fontWeight: '600', color: 'var(--accent-yellow)' }}>
+              {degraded.length} connector{degraded.length > 1 ? 's' : ''} need attention:
+            </span>
+            {' '}
+            <span style={{ color: 'var(--text-muted)' }}>
+              {degraded.map(c => `${c.name} — ${c.environment}`).join(', ')}
+            </span>
           </span>
         </div>
       )}
