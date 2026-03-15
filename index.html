@@ -7,9 +7,9 @@
     <meta name="description" content="Hermes Platform — Integration Control Plane by Alden Merlin" />
     <title>Hermes Platform</title>
     <!--
-      Theme initialization script — must run before React hydrates.
-      Reads localStorage and sets data-theme on <html> synchronously,
-      preventing any flash of wrong theme on load.
+      Blocking theme script — runs synchronously before any CSS or React loads.
+      Sets data-theme AND color-scheme on <html> so the browser paints the
+      correct background on the very first frame. No flash, no transition.
     -->
     <script>
       (function () {
@@ -17,7 +17,9 @@
         var saved = null
         try { saved = localStorage.getItem(KEY) } catch (_) {}
         var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark'
-        document.documentElement.setAttribute('data-theme', theme)
+        var el = document.documentElement
+        el.setAttribute('data-theme', theme)
+        el.style.colorScheme = theme
       })()
     </script>
   </head>

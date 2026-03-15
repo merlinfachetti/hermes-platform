@@ -26,11 +26,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   useEffect(() => {
-    // Sync attribute and storage on every change
+    // Step 1: apply theme attribute immediately (no transition yet)
     document.documentElement.setAttribute('data-theme', theme)
-    try {
-      localStorage.setItem(STORAGE_KEY, theme)
-    } catch {}
+    try { localStorage.setItem(STORAGE_KEY, theme) } catch {}
+
+    // Step 2: enable transitions after a single frame — prevents FOWT
+    const raf = requestAnimationFrame(() => {
+      document.documentElement.classList.add('theme-ready')
+    })
+    return () => cancelAnimationFrame(raf)
   }, [theme])
 
   const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
