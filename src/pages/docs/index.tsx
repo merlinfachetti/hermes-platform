@@ -144,13 +144,11 @@ const sections = [
 // ── Page ───────────────────────────────────────────────────────────────────
 export default function DocsPage() {
   const [active, setActive] = useState('overview')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isMobile = useIsMobile()
   const section = sections.find((s) => s.id === active)!
 
   const handleSelect = (id: string) => {
     setActive(id)
-    setMobileMenuOpen(false)
   }
 
   return (
