@@ -6,87 +6,116 @@ import { ErrorState, EmptyState } from '../../components/ui/States'
 import { StatusBadge } from '../../components/status/StatusBadge'
 import { HealthBar } from '../../components/status/HealthBar'
 import { formatRelative, formatNumber } from '../../lib/format'
+import { useIsMobile } from '../../lib/useBreakpoint'
 import type { Connector, Provider } from '../../types'
 
-const COLS = '2fr 110px 110px 140px 150px 90px'
-const HEADERS = ['Connector', 'Status', 'Auth', 'Health', 'Records Synced', 'Last Sync']
-
-function ConnectorRow({ connector, provider, onClick }: {
-  connector: Connector; provider?: Provider; onClick: () => void
-}) {
+// ── Mobile card view ───────────────────────────────────────────────────────
+function ConnectorCard({ connector, provider, onClick }: { connector: Connector; provider?: Provider; onClick: () => void }) {
   return (
-    <div
-      onClick={onClick}
-      style={{
-        display: 'grid', gridTemplateColumns: COLS,
-        alignItems: 'center', gap: '16px',
-        padding: '13px 20px', borderBottom: '1px solid var(--border-subtle)',
-        cursor: 'pointer', transition: 'background-color 0.12s',
-      }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+    <div onClick={onClick} style={{
+      padding: '14px 16px', borderBottom: '1px solid var(--border-subtle)',
+      cursor: 'pointer', transition: 'background-color 0.12s',
+    }}
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
     >
-      <div>
-        <div style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '2px', transition: 'color 0.3s' }}>
-          {connector.name}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '2px' }}>{connector.name}</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{provider?.name ?? connector.providerId} · {connector.environment}</div>
         </div>
-        <div style={{ fontSize: '11px', color: 'var(--text-muted)', transition: 'color 0.3s' }}>
-          {provider?.name ?? connector.providerId} · {connector.environment}
+        <div style={{ display: 'flex', gap: '6px', flexShrink: 0, marginLeft: '8px' }}>
+          <StatusBadge status={connector.status} size="sm" />
         </div>
       </div>
-      <StatusBadge status={connector.status} size="sm" />
-      <StatusBadge status={connector.authStatus} size="sm" />
-      <div style={{ minWidth: '80px' }}><HealthBar score={connector.healthScore} /></div>
-      <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace', transition: 'color 0.3s' }}>
-        {formatNumber(connector.recordsSynced)}
-      </div>
-      <div style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'right', transition: 'color 0.3s' }}>
-        {connector.lastSyncAt ? formatRelative(connector.lastSyncAt) : '—'}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        <div>
+          <div style={{ fontSize: '10px', color: 'var(--text-faint)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Health</div>
+          <HealthBar score={connector.healthScore} />
+        </div>
+        <div>
+          <div style={{ fontSize: '10px', color: 'var(--text-faint)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Last Sync</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{connector.lastSyncAt ? formatRelative(connector.lastSyncAt) : '—'}</div>
+        </div>
       </div>
     </div>
   )
 }
 
+// ── Desktop table row ──────────────────────────────────────────────────────
+const COLS = '2fr 110px 110px 140px 150px 90px'
+const HEADERS = ['Connector', 'Status', 'Auth', 'Health', 'Records Synced', 'Last Sync']
+
+function ConnectorRow({ connector, provider, onClick }: { connector: Connector; provider?: Provider; onClick: () => void }) {
+  return (
+    <div onClick={onClick} style={{
+      display: 'grid', gridTemplateColumns: COLS, alignItems: 'center', gap: '16px',
+      padding: '13px 20px', borderBottom: '1px solid var(--border-subtle)',
+      cursor: 'pointer', transition: 'background-color 0.12s',
+    }}
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+    >
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '2px', transition: 'color 0.3s' }}>{connector.name}</div>
+        <div style={{ fontSize: '11px', color: 'var(--text-muted)', transition: 'color 0.3s' }}>{provider?.name ?? connector.providerId} · {connector.environment}</div>
+      </div>
+      <StatusBadge status={connector.status} size="sm" />
+      <StatusBadge status={connector.authStatus} size="sm" />
+      <div style={{ minWidth: '80px' }}><HealthBar score={connector.healthScore} /></div>
+      <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>{formatNumber(connector.recordsSynced)}</div>
+      <div style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'right' }}>{connector.lastSyncAt ? formatRelative(connector.lastSyncAt) : '—'}</div>
+    </div>
+  )
+}
+
+// ── Page ───────────────────────────────────────────────────────────────────
 export default function ConnectorsPage() {
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
   const { data: connectors, isLoading: lC, error, refetch } = useConnectors()
   const { data: providers, isLoading: lP } = useProviders()
 
+  const pad = isMobile ? '16px' : '28px 32px'
+
   if (lC || lP) return (
-    <div style={{ padding: '32px' }}>
+    <div style={{ padding: pad }}>
       <Card padding="0">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)' }}>
-            <Skeleton height="36px" />
-          </div>
+          <div key={i} style={{ padding: '16px', borderBottom: '1px solid var(--border-subtle)' }}><Skeleton height="40px" /></div>
         ))}
       </Card>
     </div>
   )
 
-  if (error) return <div style={{ padding: '32px' }}><ErrorState onRetry={() => refetch()} /></div>
-  if (!connectors?.length) return <div style={{ padding: '32px' }}><EmptyState title="No connectors configured" /></div>
+  if (error) return <div style={{ padding: pad }}><ErrorState onRetry={() => refetch()} /></div>
+  if (!connectors?.length) return <div style={{ padding: pad }}><EmptyState title="No connectors configured" /></div>
 
   const providerMap = Object.fromEntries((providers ?? []).map((p) => [p.id, p]))
 
   return (
-    <div style={{ padding: '28px 32px', maxWidth: '1200px' }}>
+    <div style={{ padding: pad, maxWidth: '1200px' }}>
       <Card padding="0">
-        <div style={{
-          display: 'grid', gridTemplateColumns: COLS, gap: '16px',
-          padding: '10px 20px', borderBottom: '1px solid var(--border-default)',
-          backgroundColor: 'var(--bg-elevated)', borderRadius: '8px 8px 0 0',
-          transition: 'all 0.3s',
-        }}>
-          {HEADERS.map((h) => (
-            <div key={h} style={{ fontSize: '11px', color: 'var(--text-faint)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              {h}
+        {isMobile ? (
+          connectors.map((c) => (
+            <ConnectorCard key={c.id} connector={c} provider={providerMap[c.providerId]} onClick={() => navigate(`/connectors/${c.id}`)} />
+          ))
+        ) : (
+          <>
+            <div style={{
+              display: 'grid', gridTemplateColumns: COLS, gap: '16px',
+              padding: '10px 20px', borderBottom: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-elevated)', borderRadius: '8px 8px 0 0', transition: 'all 0.3s',
+            }}>
+              {HEADERS.map((h) => (
+                <div key={h} style={{ fontSize: '11px', color: 'var(--text-faint)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</div>
+              ))}
             </div>
-          ))}
-        </div>
-        {connectors.map((c) => (
-          <ConnectorRow key={c.id} connector={c} provider={providerMap[c.providerId]} onClick={() => navigate(`/connectors/${c.id}`)} />
-        ))}
+            {connectors.map((c) => (
+              <ConnectorRow key={c.id} connector={c} provider={providerMap[c.providerId]} onClick={() => navigate(`/connectors/${c.id}`)} />
+            ))}
+          </>
+        )}
       </Card>
     </div>
   )

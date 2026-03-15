@@ -5,6 +5,7 @@ import { Skeleton } from '../../components/ui/Skeleton'
 import { ErrorState, EmptyState } from '../../components/ui/States'
 import { StatusBadge } from '../../components/status/StatusBadge'
 import { formatDateTime } from '../../lib/format'
+import { useIsMobile } from '../../lib/useBreakpoint'
 import type { Severity } from '../../types'
 
 const SEVERITIES: (Severity | 'all')[] = ['all', 'critical', 'error', 'warning', 'info']
@@ -12,34 +13,39 @@ const SEVERITIES: (Severity | 'all')[] = ['all', 'critical', 'error', 'warning',
 export default function LogsPage() {
   const [filter, setFilter] = useState<Severity | 'all'>('all')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const isMobile = useIsMobile()
 
   const { data: logs, isLoading, error, refetch } = useLogs()
   const { data: connectors } = useConnectors()
   const connectorMap = Object.fromEntries((connectors ?? []).map((c) => [c.id, c]))
   const filtered = filter === 'all' ? logs : logs?.filter((l) => l.severity === filter)
+  const pad = isMobile ? '16px' : '28px 32px'
 
   if (isLoading) return (
-    <div style={{ padding: '28px 32px' }}>
+    <div style={{ padding: pad }}>
       <Card padding="0">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)' }}>
-            <Skeleton height="40px" />
-          </div>
+          <div key={i} style={{ padding: '16px', borderBottom: '1px solid var(--border-subtle)' }}><Skeleton height="40px" /></div>
         ))}
       </Card>
     </div>
   )
 
-  if (error) return <div style={{ padding: '28px 32px' }}><ErrorState onRetry={() => refetch()} /></div>
+  if (error) return <div style={{ padding: pad }}><ErrorState onRetry={() => refetch()} /></div>
 
   return (
-    <div style={{ padding: '28px 32px', maxWidth: '1100px' }}>
-      {/* Filter bar */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div style={{ padding: pad, maxWidth: '1100px' }}>
+      {/* Filter bar — scrollable on mobile */}
+      <div style={{
+        display: 'flex', gap: '6px', marginBottom: '16px',
+        overflowX: 'auto', paddingBottom: isMobile ? '4px' : 0,
+        WebkitOverflowScrolling: 'touch',
+        alignItems: 'center',
+      }}>
         {SEVERITIES.map((s) => (
           <button key={s} onClick={() => setFilter(s)} style={{
             padding: '5px 12px', borderRadius: '5px', fontSize: '12px', fontWeight: '500',
-            cursor: 'pointer', border: '1px solid',
+            cursor: 'pointer', border: '1px solid', whiteSpace: 'nowrap', flexShrink: 0,
             borderColor: filter === s ? 'var(--accent-blue)' : 'var(--border-default)',
             backgroundColor: filter === s ? 'var(--bg-elevated)' : 'transparent',
             color: filter === s ? 'var(--accent-blue)' : 'var(--text-muted)',
@@ -48,7 +54,7 @@ export default function LogsPage() {
             {s}
           </button>
         ))}
-        <span style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--text-faint)' }}>
+        <span style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--text-faint)', flexShrink: 0 }}>
           {filtered?.length ?? 0} events
         </span>
       </div>
@@ -57,46 +63,47 @@ export default function LogsPage() {
         {!filtered?.length
           ? <EmptyState title="No events match this filter" />
           : filtered.map((log) => (
-            <div
-              key={log.id}
+            <div key={log.id}
               onClick={() => setExpanded(expanded === log.id ? null : log.id)}
               style={{
-                padding: '14px 20px', borderBottom: '1px solid var(--border-subtle)',
+                padding: isMobile ? '12px 14px' : '14px 20px',
+                borderBottom: '1px solid var(--border-subtle)',
                 cursor: 'pointer',
                 backgroundColor: expanded === log.id ? 'var(--bg-elevated)' : 'transparent',
                 transition: 'background-color 0.15s',
               }}
-              onMouseEnter={(e) => {
-                if (expanded !== log.id) e.currentTarget.style.backgroundColor = 'var(--bg-hover)'
-              }}
-              onMouseLeave={(e) => {
-                if (expanded !== log.id) e.currentTarget.style.backgroundColor = 'transparent'
-              }}
+              onMouseEnter={(e) => { if (expanded !== log.id) e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+              onMouseLeave={(e) => { if (expanded !== log.id) e.currentTarget.style.backgroundColor = 'transparent' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                <StatusBadge status={log.severity} size="sm" />
-                <span style={{ fontSize: '11px', color: 'var(--text-faint)', fontFamily: 'JetBrains Mono, monospace' }}>
-                  {log.code}
-                </span>
-                <span style={{ fontSize: '13px', color: 'var(--text-primary)', flex: 1, transition: 'color 0.3s' }}>
-                  {log.message}
-                </span>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                  {connectorMap[log.connectorId]?.name ?? log.connectorId}
-                </span>
-                <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
-                  {formatDateTime(log.occurredAt)}
-                </span>
-                <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
-                  {expanded === log.id ? '▲' : '▼'}
-                </span>
-              </div>
+              {isMobile ? (
+                // Mobile layout — stacked
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                    <StatusBadge status={log.severity} size="sm" />
+                    <span style={{ fontSize: '10px', color: 'var(--text-faint)', fontFamily: 'JetBrains Mono, monospace', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{log.code}</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-faint)', flexShrink: 0 }}>{expanded === log.id ? '▲' : '▼'}</span>
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-primary)', marginBottom: '4px', lineHeight: '1.4' }}>{log.message}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
+                    {connectorMap[log.connectorId]?.name} · {formatDateTime(log.occurredAt)}
+                  </div>
+                </div>
+              ) : (
+                // Desktop layout — inline
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                  <StatusBadge status={log.severity} size="sm" />
+                  <span style={{ fontSize: '11px', color: 'var(--text-faint)', fontFamily: 'JetBrains Mono, monospace' }}>{log.code}</span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)', flex: 1, transition: 'color 0.3s' }}>{log.message}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{connectorMap[log.connectorId]?.name ?? log.connectorId}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>{formatDateTime(log.occurredAt)}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>{expanded === log.id ? '▲' : '▼'}</span>
+                </div>
+              )}
               {expanded === log.id && (
                 <div style={{
-                  marginTop: '12px', padding: '12px', borderRadius: '6px',
+                  marginTop: '10px', padding: '10px 12px', borderRadius: '6px',
                   backgroundColor: 'var(--bg-base)', border: '1px solid var(--border-subtle)',
-                  fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6',
-                  transition: 'all 0.3s',
+                  fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6', transition: 'all 0.3s',
                 }}>
                   {log.details}
                 </div>

@@ -1,76 +1,40 @@
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTheme } from '../../lib/theme'
+import { useIsMobile } from '../../lib/useBreakpoint'
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 function IconDashboard() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <rect x="1" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/>
-      <rect x="8.5" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/>
-      <rect x="1" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/>
-      <rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/>
-    </svg>
-  )
+  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1" stroke="currentColor" strokeWidth="1.2"/></svg>
 }
-
 function IconConnectors() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <circle cx="3" cy="7.5" r="2" stroke="currentColor" strokeWidth="1.2"/>
-      <circle cx="12" cy="3" r="2" stroke="currentColor" strokeWidth="1.2"/>
-      <circle cx="12" cy="12" r="2" stroke="currentColor" strokeWidth="1.2"/>
-      <path d="M5 7.5h3M8 7.5L10 3M8 7.5L10 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  )
+  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="3" cy="7.5" r="2" stroke="currentColor" strokeWidth="1.2"/><circle cx="12" cy="3" r="2" stroke="currentColor" strokeWidth="1.2"/><circle cx="12" cy="12" r="2" stroke="currentColor" strokeWidth="1.2"/><path d="M5 7.5h3M8 7.5L10 3M8 7.5L10 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
 }
-
 function IconJobs() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <circle cx="7.5" cy="7.5" r="6" stroke="currentColor" strokeWidth="1.2"/>
-      <path d="M7.5 4v3.5l2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  )
+  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M7.5 4v3.5l2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
 }
-
 function IconLogs() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <path d="M2 3h11M2 6h8M2 9h10M2 12h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  )
+  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3h11M2 6h8M2 9h10M2 12h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
 }
-
 function IconDocs() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <path d="M3 1h6.5L12 3.5V14H3V1z" stroke="currentColor" strokeWidth="1.2"/>
-      <path d="M9 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M5 6h5M5 8.5h5M5 11h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  )
+  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 1h6.5L12 3.5V14H3V1z" stroke="currentColor" strokeWidth="1.2"/><path d="M9 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 6h5M5 8.5h5M5 11h3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
 }
-
 function IconHome() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-      <path d="M7.5 1L1 6.5V14h4.5v-4h4v4H14V6.5L7.5 1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
-    </svg>
-  )
+  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1L1 6.5V14h4.5v-4h4v4H14V6.5L7.5 1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+}
+function IconClose() {
+  return <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
 }
 
-// ── Nav items ──────────────────────────────────────────────────────────────
 const navItems = [
-  { path: '/',           label: 'Home',        icon: <IconHome /> },
-  { path: '/dashboard',  label: 'Dashboard',   icon: <IconDashboard /> },
-  { path: '/connectors', label: 'Connectors',  icon: <IconConnectors /> },
-  { path: '/sync-jobs',  label: 'Sync Jobs',   icon: <IconJobs /> },
-  { path: '/logs',       label: 'Logs',        icon: <IconLogs /> },
-  { path: '/docs',       label: 'Docs',        icon: <IconDocs /> },
+  { path: '/',           label: 'Home',       icon: <IconHome /> },
+  { path: '/dashboard',  label: 'Dashboard',  icon: <IconDashboard /> },
+  { path: '/connectors', label: 'Connectors', icon: <IconConnectors /> },
+  { path: '/sync-jobs',  label: 'Sync Jobs',  icon: <IconJobs /> },
+  { path: '/logs',       label: 'Logs',       icon: <IconLogs /> },
+  { path: '/docs',       label: 'Docs',       icon: <IconDocs /> },
 ]
 
-// ── Logo ───────────────────────────────────────────────────────────────────
 function HermesLogo() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
@@ -85,11 +49,7 @@ function HermesLogo() {
         </svg>
       </div>
       <div>
-        <div style={{
-          fontWeight: '600', fontSize: '14px',
-          color: 'var(--text-primary)', letterSpacing: '-0.02em',
-          transition: 'color 0.3s',
-        }}>
+        <div style={{ fontWeight: '600', fontSize: '14px', color: 'var(--text-primary)', letterSpacing: '-0.02em', transition: 'color 0.3s' }}>
           Hermes Platform
         </div>
         <div style={{ fontSize: '10px', color: 'var(--text-faint)', marginTop: '1px', transition: 'color 0.3s' }}>
@@ -100,38 +60,18 @@ function HermesLogo() {
   )
 }
 
-// ── Sidebar ────────────────────────────────────────────────────────────────
-export function Sidebar() {
+// ── Nav content (shared between mobile drawer and desktop sidebar) ──────────
+function NavContent({ onNav }: { onNav?: () => void }) {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Stagger mount for nav animation
     const t = setTimeout(() => setMounted(true), 50)
     return () => clearTimeout(t)
   }, [])
 
   return (
-    <aside style={{
-      width: '216px',
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-surface)',
-      borderRight: '1px solid var(--border-subtle)',
-      display: 'flex',
-      flexDirection: 'column',
-      flexShrink: 0,
-      transition: 'background-color 0.3s ease, border-color 0.3s ease',
-    }}>
-
-      {/* Logo */}
-      <div style={{
-        padding: '18px 16px 16px',
-        borderBottom: '1px solid var(--border-subtle)',
-        transition: 'border-color 0.3s',
-      }}>
-        <HermesLogo />
-      </div>
-
+    <>
       {/* Environment badge */}
       <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border-subtle)', transition: 'border-color 0.3s' }}>
         <div style={{
@@ -142,36 +82,22 @@ export function Sidebar() {
           fontSize: '11px', color: 'var(--accent-green)', fontWeight: '500',
           transition: 'all 0.3s',
         }}>
-          <span className="pulse-dot" style={{
-            width: '5px', height: '5px', borderRadius: '50%',
-            backgroundColor: 'var(--accent-green)', display: 'inline-block',
-          }} />
+          <span className="pulse-dot" style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--accent-green)', display: 'inline-block' }} />
           Production
         </div>
       </div>
 
       {/* Nav */}
-      <nav style={{ padding: '10px 8px', flex: 1 }}>
-        <div style={{
-          fontSize: '10px', color: 'var(--text-faint)', fontWeight: '600',
-          padding: '4px 10px 8px', letterSpacing: '0.08em', textTransform: 'uppercase',
-          transition: 'color 0.3s',
-        }}>
+      <nav style={{ padding: '10px 8px', flex: 1, overflowY: 'auto' }}>
+        <div style={{ fontSize: '10px', color: 'var(--text-faint)', fontWeight: '600', padding: '4px 10px 8px', letterSpacing: '0.08em', textTransform: 'uppercase', transition: 'color 0.3s' }}>
           Platform
         </div>
-
         {navItems.map((item, i) => (
-          <div
-            key={item.path}
-            style={{
-              opacity: mounted ? 1 : 0,
-              animation: mounted ? `nav-item-in 0.35s ease forwards` : 'none',
-              animationDelay: `${i * 55}ms`,
-            }}
-          >
+          <div key={item.path} style={{ opacity: mounted ? 1 : 0, animation: mounted ? 'nav-item-in 0.35s ease forwards' : 'none', animationDelay: `${i * 55}ms` }}>
             <NavLink
               to={item.path}
               end={item.path === '/'}
+              onClick={onNav}
               style={({ isActive }) => ({
                 display: 'flex', alignItems: 'center', gap: '9px',
                 padding: '7px 10px', borderRadius: '5px',
@@ -206,28 +132,124 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer */}
-      <div style={{
-        padding: '12px 16px',
-        borderTop: '1px solid var(--border-subtle)',
-        transition: 'border-color 0.3s',
-      }}>
+      {/* Bottom status */}
+      <div style={{ padding: '12px 16px', borderTop: '1px solid var(--border-subtle)', transition: 'border-color 0.3s' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '6px' }}>
-          <span className="pulse-dot" style={{
-            width: '5px', height: '5px', borderRadius: '50%',
-            backgroundColor: 'var(--accent-green)', display: 'inline-block', flexShrink: 0,
-          }} />
-          <span style={{ fontSize: '11px', color: 'var(--text-faint)', transition: 'color 0.3s' }}>
-            All systems nominal
-          </span>
+          <span className="pulse-dot" style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--accent-green)', display: 'inline-block', flexShrink: 0 }} />
+          <span style={{ fontSize: '11px', color: 'var(--text-faint)', transition: 'color 0.3s' }}>All systems nominal</span>
         </div>
-        <div style={{
-          fontSize: '10px', color: 'var(--text-faint)',
-          fontFamily: 'JetBrains Mono, monospace', transition: 'color 0.3s',
-        }}>
+        <div style={{ fontSize: '10px', color: 'var(--text-faint)', fontFamily: 'JetBrains Mono, monospace', transition: 'color 0.3s' }}>
           v0.1.0-alpha
         </div>
       </div>
+    </>
+  )
+}
+
+// ── Desktop Sidebar ────────────────────────────────────────────────────────
+function DesktopSidebar() {
+  return (
+    <aside style={{
+      width: '216px', minHeight: '100vh',
+      backgroundColor: 'var(--bg-surface)',
+      borderRight: '1px solid var(--border-subtle)',
+      display: 'flex', flexDirection: 'column', flexShrink: 0,
+      transition: 'background-color 0.3s ease, border-color 0.3s ease',
+    }}>
+      <div style={{ padding: '18px 16px 16px', borderBottom: '1px solid var(--border-subtle)', transition: 'border-color 0.3s' }}>
+        <HermesLogo />
+      </div>
+      <NavContent />
     </aside>
   )
+}
+
+// ── Mobile Drawer ──────────────────────────────────────────────────────────
+function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  // Lock body scroll when open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  return (
+    <>
+      {/* Overlay */}
+      <div
+        onClick={onClose}
+        style={{
+          position: 'fixed', inset: 0, zIndex: 40,
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? 'auto' : 'none',
+          transition: 'opacity 0.25s ease',
+          backdropFilter: open ? 'blur(2px)' : 'none',
+        }}
+      />
+      {/* Drawer */}
+      <aside style={{
+        position: 'fixed', top: 0, left: 0, bottom: 0, zIndex: 50,
+        width: '260px',
+        backgroundColor: 'var(--bg-surface)',
+        borderRight: '1px solid var(--border-subtle)',
+        display: 'flex', flexDirection: 'column',
+        transform: open ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
+        boxShadow: open ? '8px 0 32px rgba(0,0,0,0.4)' : 'none',
+      }}>
+        {/* Drawer header with close */}
+        <div style={{
+          padding: '16px', borderBottom: '1px solid var(--border-subtle)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          transition: 'border-color 0.3s',
+        }}>
+          <HermesLogo />
+          <button onClick={onClose} style={{
+            width: '30px', height: '30px', borderRadius: '6px',
+            border: '1px solid var(--border-subtle)',
+            backgroundColor: 'var(--bg-elevated)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', color: 'var(--text-muted)',
+            transition: 'all 0.15s',
+          }}>
+            <IconClose />
+          </button>
+        </div>
+        <NavContent onNav={onClose} />
+      </aside>
+    </>
+  )
+}
+
+// ── Exported Sidebar (picks Desktop or Mobile) ─────────────────────────────
+// The mobile hamburger button is exposed via context so Header can render it
+import { createContext, useContext } from 'react'
+
+interface SidebarContextValue {
+  open: boolean
+  toggle: () => void
+}
+export const SidebarContext = createContext<SidebarContextValue>({ open: false, toggle: () => {} })
+export function useSidebar() { return useContext(SidebarContext) }
+
+export function SidebarProvider({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+  const location = useLocation()
+
+  // Close drawer on route change
+  useEffect(() => { setOpen(false) }, [location.pathname])
+
+  return (
+    <SidebarContext.Provider value={{ open, toggle: () => setOpen(o => !o) }}>
+      {children}
+    </SidebarContext.Provider>
+  )
+}
+
+export function Sidebar() {
+  const isMobile = useIsMobile()
+  const { open, toggle } = useSidebar()
+
+  if (isMobile) return <MobileDrawer open={open} onClose={toggle} />
+  return <DesktopSidebar />
 }
